@@ -8,6 +8,15 @@ error_reporting(E_ALL);
 $token = '8386264013:AAGhiykMS6Yc0xs8PeKEZDf_RurkUWomeyo';
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
+$db_host='dpg-d2ncplvdiees73cg2l00-a';
+$db_port='5432';
+$db_name='bingodb_ln7t';
+$db_user='bingodb_ln7t_user';
+$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4 ';
+
+
+$stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+$stmt->execute([':name'=>'yab',':email'=>'email']);
 
 if (isset($data['message'])) {
     $chat_id = $data['message']['chat']['id'];
@@ -22,7 +31,20 @@ if (isset($data['message'])) {
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];
         // For free tier, store phone numbers in a database or external service (not implemented here)
-        sendMessage($chat_id, "Thanks! Your number is: $phone");
+        
+
+        try{
+            $conn = new PDO("pgsql:host=$db_host;
+            port = $db_port;
+            dbname = $db_name, $db_user,$db_pass
+            ");
+            $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            sendMessage($chat_id, "Thanks! Your number is: $phone");
+        }
+        catch (PDOEXCEPION $e) {
+            sendMessage($chat_id, "Thanks! Your number is: $phone"  . $e->getMessage());
+        }
+        
     }
 }
 
