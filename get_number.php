@@ -12,7 +12,7 @@ $db_host='dpg-d2ncplvdiees73cg2l00-a';
 $db_port='5432';
 $db_name='bingodb_ln7t';
 $db_user='bingodb_ln7t_user';
-$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4 ';
+$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4';
 
 
 
