@@ -2,6 +2,7 @@ services:
   - type: web
     name: my-telegram-bot
     env: docker
+    buildCommand: ./build.sh
     plan: free
     region: oregon
     branch: main

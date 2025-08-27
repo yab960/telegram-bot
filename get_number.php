@@ -40,7 +40,7 @@ if (isset($data['message'])) {
             sendMessage($chat_id, "Thanks! Your number is: $phone");
         }
         catch (PDOException $e){
-            sendMessage($chat_id, "Error $phone"  . $e->getMessage());
+            sendMessage($chat_id, "Error:"  . $e->getMessage());
         }
         
     }
