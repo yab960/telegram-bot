@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: my-telegram-bot
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: PORT
+        value: 10000
