@@ -15,8 +15,6 @@ $db_user='bingodb_ln7t_user';
 $db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4 ';
 
 
-$stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-$stmt->execute([':name'=>'yab',':email'=>'email']);
 
 if (isset($data['message'])) {
     $chat_id = $data['message']['chat']['id'];
@@ -34,11 +32,11 @@ if (isset($data['message'])) {
         
 
         try{
-            $conn = new PDO("pgsql:host=$db_host;
-            port = $db_port;
-            dbname = $db_name, $db_user,$db_pass
-            ");
+            $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+            $stmt->execute([':name'=>'yab',':email'=>'email']);
+
             sendMessage($chat_id, "Thanks! Your number is: $phone");
         }
         catch (PDOEXCEPION $e) {
