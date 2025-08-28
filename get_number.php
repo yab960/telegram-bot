@@ -8,12 +8,6 @@ error_reporting(E_ALL);
 $input = file_get_contents('php://input');
 error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
-$db_host=getenv('db_host');
-$db_port=getenv('db_port');
-$db_name=getenv('db_name');
-$db_user=getenv('db_user');
-$db_pass=getenv('db_pass');
-
 
 
 if (isset($data['message'])) {
@@ -28,7 +22,7 @@ if (isset($data['message'])) {
     }
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];        
-        store_in_db("yabiya","atgmail")
+        store_in_db("yabiya","atgmail");
 
         
     }
@@ -53,6 +47,13 @@ function sendMessage($chat_id, $text, $keyboard = null) {
 }
 
 function store_in_db($name,$email){
+        $db_host=getenv('db_host');
+        $db_port=getenv('db_port');
+        $db_name=getenv('db_name');
+        $db_user=getenv('db_user');
+        $db_pass=getenv('db_pass');
+
+
         try{
             $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
