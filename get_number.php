@@ -28,18 +28,8 @@ if (isset($data['message'])) {
     }
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];        
+        store_in_db("yabiya","atgmail")
 
-        try{
-            $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
-            $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->execute([':name'=>'yab',':email'=>'email']);
-
-            sendMessage($chat_id, "Thanks! Your number is: $phone");
-        }
-        catch (PDOException $e){
-            sendMessage($chat_id, "Error:"  . $e->getMessage());
-        }
         
     }
 }
@@ -60,5 +50,19 @@ function sendMessage($chat_id, $text, $keyboard = null) {
     $result = curl_exec($ch);
     curl_close($ch);
     return json_decode($result, true);
+}
+
+function store_in_db($name,$email){
+        try{
+            $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
+            $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+            $stmt->execute([':name'=>$name,':email'=>$email]);
+
+            sendMessage($chat_id, "Thanks! Your number is: $phone");
+        }
+        catch (PDOException $e){
+            sendMessage($chat_id, "Error:"  . $e->getMessage());
+        }
 }
 ?>
