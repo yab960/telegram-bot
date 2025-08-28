@@ -5,10 +5,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Process Telegram webhook
-$token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
 $input = file_get_contents('php://input');
 error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
+$token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
 // $db_host='dpg-d2ncplvdiees73cg2l00-a';
 // $db_port='5432';
 // $db_name='bingodb_ln7t';
