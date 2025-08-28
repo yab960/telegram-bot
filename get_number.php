@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 $input = file_get_contents('php://input');
 error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
-$token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
+$token = '8386264013:AAEHYs4d-9u8M2mfiYsNMQA8GuLmbBWG8Qc';
 // $db_host='dpg-d2ncplvdiees73cg2l00-a';
 // $db_port='5432';
 // $db_name='bingodb_ln7t';
@@ -48,7 +48,7 @@ if (isset($data['message'])) {
 }
 
 function sendMessage($chat_id, $text, $keyboard = null) {
-    $token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
+    $token = '8386264013:AAEHYs4d-9u8M2mfiYsNMQA8GuLmbBWG8Qc';
     $url = "https://api.telegram.org/bot$token/sendMessage";
     $post = ['chat_id' => $chat_id, 'text' => $text];
     if ($keyboard) {
