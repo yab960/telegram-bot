@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Process Telegram webhook
-$token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
+$token = getenv('bot_token');
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 $db_host='dpg-d2ncplvdiees73cg2l00-a';
@@ -31,17 +31,17 @@ if (isset($data['message'])) {
         // For free tier, store phone numbers in a database or external service (not implemented here)
         
 
-        try{
-            $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
-            $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->execute([':name'=>'yab',':email'=>'email']);
+        // try{
+        //     $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
+        //     $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+        //     $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+        //     $stmt->execute([':name'=>'yab',':email'=>'email']);
 
-            sendMessage($chat_id, "Thanks! Your number is: $phone");
-        }
-        catch (PDOException $e){
-            sendMessage($chat_id, "Error:"  . $e->getMessage());
-        }
+        //     sendMessage($chat_id, "Thanks! Your number is: $phone");
+        // }
+        // catch (PDOException $e){
+        //     sendMessage($chat_id, "Error:"  . $e->getMessage());
+        // }
         
     }
 }
