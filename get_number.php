@@ -8,11 +8,11 @@ error_reporting(E_ALL);
 $token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
-$db_host='dpg-d2ncplvdiees73cg2l00-a';
-$db_port='5432';
-$db_name='bingodb_ln7t';
-$db_user='bingodb_ln7t_user';
-$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4';
+// $db_host='dpg-d2ncplvdiees73cg2l00-a';
+// $db_port='5432';
+// $db_name='bingodb_ln7t';
+// $db_user='bingodb_ln7t_user';
+// $db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4';
 
 
 
