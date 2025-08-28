@@ -8,11 +8,11 @@ error_reporting(E_ALL);
 $input = file_get_contents('php://input');
 error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
-$db_host='dpg-d2ncplvdiees73cg2l00-a';
-$db_port='5432';
-$db_name='bingodb_ln7t';
-$db_user='bingodb_ln7t_user';
-$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4';
+$db_host=getenv('db_host');
+$db_port=getenv('db_port');
+$db_name=get_env('db_name');
+$db_user=get_env('db_user');
+$db_pass=get_env('db_pass');
 
 
 
@@ -24,7 +24,7 @@ if (isset($data['message'])) {
             'resize_keyboard' => true,
             'one_time_keyboard' => true
         ];
-        sendMessage($chat_id, "Please share your phone number:", $keyboard);
+        $response =sendMessage($chat_id, "Please share your phone number:", $keyboard);
     }
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];        
