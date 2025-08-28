@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Process Telegram webhook
-$token = getenv('bot_token');
+$token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 $db_host='dpg-d2ncplvdiees73cg2l00-a';
@@ -47,7 +47,7 @@ if (isset($data['message'])) {
 }
 
 function sendMessage($chat_id, $text, $keyboard = null) {
-    $token =  getenv('bot_token');
+    $token =  "8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU";
     $url = "https://api.telegram.org/bot$token/sendMessage";
     $post = ['chat_id' => $chat_id, 'text' => $text];
     if ($keyboard) {
