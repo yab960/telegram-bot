@@ -47,14 +47,13 @@ function sendMessage($chat_id, $text, $keyboard = null) {
 }
 
 function store_in_db($name,$email){
-        $db_host=getenv('db_host');
-        $db_port=getenv('db_port');
-        $db_name=getenv('db_name');
-        $db_user=getenv('db_user');
-        $db_pass=getenv('db_pass');
-
 
         try{
+            $db_host=getenv('db_host');
+            $db_port=getenv('db_port');
+            $db_name=getenv('db_name');
+            $db_user=getenv('db_user');
+            $db_pass=getenv('db_pass');
             $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
