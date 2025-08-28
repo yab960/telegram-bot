@@ -26,7 +26,7 @@ if (isset($data['message'])) {
     }
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];        
-        store_in_db("yabiya","atgmail",$db_host,$db_port,$db_name,$db_user,$db_pass,$chat_id,$phone);
+        store_in_db($db_host,$db_port,$db_name,$db_user,$db_pass,$chat_id,$phone);
 
         
     }
@@ -50,14 +50,14 @@ function sendMessage($chat_id, $text, $keyboard = null) {
     return json_decode($result, true);
 }
 
-function store_in_db($name,$email,$db_host,$db_port,$db_name,$db_user,$db_pass,$chat_id,$phone){
+function store_in_db($db_host,$db_port,$db_name,$db_user,$db_pass,$chat_id,$phone){
 
         try{
 
             $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->execute([':name'=>$name,':email'=>$email]);
+            $stmt->execute([':name'=>$phone,':email'=>$chat_id]);
 
             sendMessage($chat_id, "Thanks! Your number is: $phone");
         }
