@@ -9,12 +9,6 @@ $input = file_get_contents('php://input');
 error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
 $token = '8386264013:AAEHYs4d-9u8M2mfiYsNMQA8GuLmbBWG8Qc';
-$db_host='dpg-d2ncplvdiees73cg2l00-a';
-$db_port='5432';
-$db_name='bingodb_ln7t';
-$db_user='bingodb_ln7t_user';
-$db_pass='REUKeK5sT9mzpYPzwMXt0qJBlBrvoTr4';
-
 
 
 if (isset($data['message'])) {
@@ -32,17 +26,7 @@ if (isset($data['message'])) {
         For free tier, store phone numbers in a database or external service (not implemented here)
         
 
-        try{
-            $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
-            $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->execute([':name'=>'yab',':email'=>'email']);
-
-            sendMessage($chat_id, "Thanks! Your number is: $phone");
-        }
-        catch (PDOException $e){
-            sendMessage($chat_id, "Error:"  . $e->getMessage());
-        }
+        
         
     }
 }
