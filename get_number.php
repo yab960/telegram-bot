@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 // Process Telegram webhook
 $token = '8386264013:AAHwNq_LooZIdajYIdQstz3sf_xgpelV0zU';
 $input = file_get_contents('php://input');
-file_put_contents('telegram_debug.log', $input . PHP_EOL, FILE_APPEND);
+error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
 // $db_host='dpg-d2ncplvdiees73cg2l00-a';
 // $db_port='5432';
