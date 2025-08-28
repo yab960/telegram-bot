@@ -10,9 +10,9 @@ error_log("Webhook triggered. Input: $input");
 $data = json_decode($input, true);
 $db_host=getenv('db_host');
 $db_port=getenv('db_port');
-$db_name=get_env('db_name');
-$db_user=get_env('db_user');
-$db_pass=get_env('db_pass');
+$db_name=getenv('db_name');
+$db_user=getenv('db_user');
+$db_pass=getenv('db_pass');
 
 
 
