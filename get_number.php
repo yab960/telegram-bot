@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Process Telegram webhook
-$token = '8386264013:AAGhiykMS6Yc0xs8PeKEZDf_RurkUWomeyo';
+$token = getenv('GITHUB_TOKEN');
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 $db_host='dpg-d2ncplvdiees73cg2l00-a';
