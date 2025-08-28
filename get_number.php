@@ -45,7 +45,7 @@ if (isset($data['message'])) {
 }
 
 function sendMessage($chat_id, $text, $keyboard = null) {
-    $token = '8386264013:AAEHYs4d-9u8M2mfiYsNMQA8GuLmbBWG8Qc';
+    $token = getenv('bot_token');
     $url = "https://api.telegram.org/bot$token/sendMessage";
     $post = ['chat_id' => $chat_id, 'text' => $text];
     if ($keyboard) {
