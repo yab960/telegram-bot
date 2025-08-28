@@ -57,7 +57,7 @@ function store_in_db($name,$email){
             $conn = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $stmt =$conn->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->execute([':name'=>$name,':email'=>$email]);
+            $stmt->execute([':name'=>"$name",':email'=>"$email"]);
 
             sendMessage($chat_id, "Thanks! Your number is: $phone");
         }
