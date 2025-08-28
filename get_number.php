@@ -16,7 +16,7 @@ $db_pass=getenv('db_pass');
 
 if (isset($data['message'])) {
     $chat_id = $data['message']['chat']['id'];
-    $first_name=$data['message']['from']['first_name']
+    $first_name=$data['message']['from']['first_name'];
     if (isset($data['message']['text']) && strcasecmp($data['message']['text'], '/start') === 0) {
         $keyboard = [
             'keyboard' => [[['text' => 'Share Phone Number', 'request_contact' => true]]],
