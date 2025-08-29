@@ -26,13 +26,19 @@ if (isset($data['message'])) {
             'resize_keyboard' => true,
             'one_time_keyboard' => true
         ];
-        $response =sendMessage($chat_id, "Please share your phone number:", $keyboard);
+        $is_registered=check_user($conn,$chat_id);
+        if(!$is_registered){
+
+            $response =sendMessage($chat_id, "Please share your phone number:", $keyboard);
+        }
+        else{
+            $response =sendMessage($chat_id, "You Are Already Registerd:$is_registered");
+
+        }
     }
     if (isset($data['message']['contact'])) {
         $phone = $data['message']['contact']['phone_number'];        
         store_in_db($conn,$chat_id,$phone,$first_name);
-
-        
     }
 }
 
@@ -69,8 +75,21 @@ function store_in_db($conn,$chat_id,$phone,$first_name){
         }
 }
 
-function check_user(){
-
+function check_user($conn,$chat_id){
+    try{
+        $stmt = $conn->prepare("SELECT phone_number FROM users  WHERE chat_id = :chat_id");
+        $stmt->execute([':chat_id'=>$chat_id]);
+        $result = $stmt->fetch(PDO:: FETCH_ASSOC);
+        if($result){
+            return $result['phone_number'];
+        }
+        else{
+            return null;
+        }
+    }
+    catch (PDOException $e){
+        return '123';
+    }
 }
 
 ?>
