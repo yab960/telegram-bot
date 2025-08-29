@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 10000
 
 # Start the built-in PHP server
-CMD ["php", "-S", "0.0.0.0:10000", "get_number.php"]
+CMD ["php", "-S", "0.0.0.0:10000", "router.php"]
