@@ -27,7 +27,7 @@ echo json_encode($response);
 
 function get_balance($conn,$phone_number){
     $stmt=$conn->prepare("SELECT amount FROM balance WHERE user_id = :user_id");
-    $stmt ->execute([':user+id'=>$phone_number]);
+    $stmt ->execute([':user_id'=>$phone_number]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if($result){
         $amount =$result['amount'];
