@@ -33,6 +33,7 @@ if (isset($data['message'])) {
         }
         else{
             $response =sendMessage($chat_id, "You Are Already Registerd:$is_registered");
+            launch_btn($chat_id);
 
         }
     }
@@ -90,6 +91,15 @@ function check_user($conn,$chat_id){
     catch (PDOException $e){
         return '123';
     }
+}
+function launch_btn($chat_id){
+    $launch_btn=['inline_keyboard'=>[
+        [
+
+            ['text'=>'Register now','callback_data'=>'register']
+        ]
+    ]];
+    sendMessage($chat_id,"Press launch Below To Start:",$launch_btn);
 }
 
 ?>
