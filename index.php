@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo home</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="scripts/authentication.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>working</h1>
+    <div id="data"></div>
+    
+</body>
+</html>
