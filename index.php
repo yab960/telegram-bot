@@ -9,8 +9,141 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>working</h1>
-    <div id="data"></div>
+    <div id="container">
+        <div id="title">
+            <span class="title_option" id="game">
+                Game
+                <p>10000</p>
+            </span>
+            <span class="title_option" id="bet">
+                Bet
+                <p>20ETB</p>
+            </span>
+            <span class="title_option" id="active">
+                Active
+                <p>Yes</p>
+            </span>
+            <span class="title_option" id="wallet">
+                Wallet
+                <p id="balance_amount">12,000ETB</p>
+            </span>
+        </div>
+        <div id="cards">
+            <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+                <span id="row" >
+                <div id="spot">1</div>
+                <div id="spot">2</div>
+                <div id="spot">3</div>
+                <div id="spot">4</div>
+                <div id="spot">5</div>
+                <div id="spot">6</div>
+                <div id="spot">7</div>
+                <div id="spot">8</div>
+                <div id="spot">10</div>
+            </span>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>CopyRight © Bella Group 2025 </p>
+    </footer>
     
 </body>
 </html>

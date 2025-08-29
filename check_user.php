@@ -13,14 +13,30 @@ $conn ->setAttribute(PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
 $response = ['registered' => false];
 
 if($chat_id){
-    $stmt=$conn->prepare("SELECT first_name FROM users WHERE chat_id = :chat_id");
+    $stmt=$conn->prepare("SELECT * FROM users WHERE chat_id = :chat_id");
     $stmt ->execute([':chat_id'=>$chat_id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if($result){
         $response['registered'] = true;
+        $response['balance']=get_balance($conn,$result['phone_number']);
         $response['first_name'] =$result['first_name'];
     }
 }
 header('Content-Type: application/json');
 echo json_encode($response);
+
+function get_balance($conn,$phone_number){
+    $stmt=$conn->prepare("SELECT amount FROM balance WHERE user_id = :user_id");
+    $stmt ->execute([':user+id'=>$phone_number]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($result){
+        $amount =$result['amount'];
+    }
+    else{
+        $amount=0;
+    }
+    return $amount;
+
+}
+
 ?>
