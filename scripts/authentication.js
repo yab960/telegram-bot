@@ -10,12 +10,10 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(res =>res.json())
         .then(data=>{
             if(data.registered){
-                document.getElementById('data').innerHTML=`${data.first_name}`
-
+                document.getElementById("balance_amount").innerHTML=`${data.balance}ETB`
 
             }
             else{
-                document.getElementById('data').innerHTML=" not Registered"
 
             }
 
