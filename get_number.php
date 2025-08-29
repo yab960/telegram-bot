@@ -96,7 +96,7 @@ function launch_btn($chat_id){
     $launch_btn=['inline_keyboard'=>[
         [
 
-            ['text'=>'Start The Game','callback_data'=>'register',
+            ['text'=>'Start The Game',
             'web_app'=>['url'=>'https://google.com']
             ]
         ]
