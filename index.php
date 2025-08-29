@@ -6,7 +6,7 @@
     <title>Bingo home</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="scripts/authentication.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
     <div id="container">
