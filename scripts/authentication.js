@@ -1,15 +1,25 @@
 window.addEventListener('DOMContentLoaded', () => {
-    if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.ready();  // Important!
 
         const user = Telegram.WebApp.initDataUnsafe.user;
+        fetch('/check_user.php',{
+            method: 'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({chat_id:user.id})
+        })
+        .then(res =>res.json())
+        .then(data=>{
+            if(data.registered){
+                document.getElementById('data').innerHTML="Registered"
 
-        if (user) {
-            document.getElementById('data').innerHTML = `<pre>${JSON.stringify(user, null, 2)}</pre>`;
-        } else {
-            document.getElementById('data').innerHTML = 'User data not available.';
-        }
-    } else {
-        document.getElementById('data').innerHTML = 'Please open this page inside the Telegram app.';
-    }
+
+            }
+            else{
+                document.getElementById('data').innerHTML=" not Registered"
+
+            }
+
+        })
+
+    
 });
