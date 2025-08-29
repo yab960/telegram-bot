@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(res =>res.json())
         .then(data=>{
             if(data.registered){
-                document.getElementById('data').innerHTML="Registered"
+                document.getElementById('data').innerHTML=`${data.first_name}`
 
 
             }
