@@ -15,9 +15,10 @@ $response = ['registered' => false];
 if($chat_id){
     $stmt=$conn->prepare("SELECT first_name FROM users WHERE chat_id = :chat_id");
     $stmt ->execute([':chat_id'=>$chat_id]);
-    if($stmt->fetch()){
-
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($result){
         $response['registered'] = true;
+        $response['first_name'] =$result['first_name'];
     }
 }
 header('Content-Type: application/json');
