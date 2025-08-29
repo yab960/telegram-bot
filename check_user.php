@@ -33,10 +33,26 @@ function get_balance($conn,$phone_number){
         $amount =$result['amount'];
     }
     else{
-        $amount=0;
+        $wallet = create_wallet($conn,$phone_number);
+        if(wallet){
+            $amount=0;
+        }
+        else{
+            $amount = 'error';
+        }
     }
     return $amount;
 
 }
+function create_wallet($conn,$phone_number){
+    $now = date('Y-m-d H:i:s');
+    $stmt=$conn->prepare("INSERT INTO balance (user_id,amount,updated_at) Values(:phone_number,0,:now)");
+        if($stmt ->execute([':phone_number'=>$phone_number,':now'=>$now])){
+            return true;
+        }
+        else{
+            return false;
+        }
 
+}
 ?>
