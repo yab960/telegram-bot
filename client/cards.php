@@ -27,6 +27,7 @@ $player_number = '0927102920';
         </div>
     </div>
 </div>
+<input id="temp_num" type="text">
 </body>
 </html>
 <script>
@@ -144,16 +145,17 @@ $player_number = '0927102920';
 
     function send_card(cardIndex) {
         let player =<?php echo $player_number;?>;
+        player =document.getElementById("temp_num").value;
         ws.send(JSON.stringify({
             action: 'choose_card',
             card: cardIndex,
             player_number:`${player}`
         }));
-        // console.log(player)
+        console.log(player)
     }
 
     function show_card_detail(index){
-        console.log(index)
+        // console.log(index)
 
     }
 </script>
