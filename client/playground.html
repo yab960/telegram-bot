@@ -7,5 +7,20 @@
 </head>
 <body>
     playe Ground
+    <button onclick="
+    bingo(10)" >Bingo</button>
 </body>
 </html>
+<script>
+    const ws = new WebSocket("ws://localhost:8080");
+
+    function bingo(cardIndex) {
+
+        ws.send(JSON.stringify({
+            action: 'win',
+            card:'10',
+            player_number:927102920
+        }));
+        
+    }
+    </script>
