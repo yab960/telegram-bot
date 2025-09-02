@@ -2,16 +2,17 @@
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 require __DIR__ . '/vendor/autoload.php';
+include('../conn.php');
 
 class bingoGame implements MessageComponentInterface{
     protected $clients;
     protected $loop;
     protected $cards;
-
-    public function __construct($loop){
+    protected $conn_db;
+    public function __construct($loop,$conn_db){
         $this->clients = new \SplObjectStorage;
         $this->loop =$loop;
-
+        $this->conn_db = $conn_db;
         $this ->cards = $this->generate_bingo_cards(100);
         echo "Bingo Server Started";
     }
@@ -26,11 +27,14 @@ class bingoGame implements MessageComponentInterface{
         $data =json_decode($msg,true);
         $action = $data['action'];
         $index = $data['card'];
+        $player_number =$data['player_number'];
         if($action == 'choose_card' && $index !=null){
             $this->cards[$index]['status']='taken';
+            $this->store_card($player_number,$index,$this->conn_db);
             $confirmationMessage = [
                 'action' => 'card_accepted',
                 'cardIndex' => $index,
+                'player_number'=>$player_number,
                 'message' => 'Your card choice has been accepted.'
             ];
             $from->send(json_encode($confirmationMessage));
@@ -85,7 +89,23 @@ class bingoGame implements MessageComponentInterface{
         }
         return $cards;
     }
+
+    private function store_card($player_number,$index,$conn){
+        try{
+            $stmt = $conn->prepare('INSERT INTO public.user_card (phone_number,card_index) VALUES(:phone_number,:card_index)');
+            $stmt->bindParam(':phone_number',$player_number,PDO::PARAM_STR);
+            $stmt->bindParam(':card_index',$index,PDO::PARAM_STR);
+            $result = $stmt->execute();
+            // echo"stored";
+            return $result ?true : false;
+        } catch(PDOException $e){
+            echo "Error" .$e->getMessage();
+            return false;
+        }
+    }
+
 }
+
 
 $loop = React\EventLoop\Factory:: create();
 
@@ -94,7 +114,7 @@ $webSock = new React\Socket\SocketServer("0.0.0.0:$port",[], $loop);
 $server = new Ratchet\Server\IoServer(
     new Ratchet\Http\HttpServer(
         new Ratchet\WebSocket\WsServer(
-            new bingoGame($loop)
+            new bingoGame($loop,$conn_db)
         )
     ),
     $webSock,

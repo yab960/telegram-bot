@@ -1,4 +1,10 @@
+<?php 
+session_start();
+$player_number = '0927102920';
+
+?>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,6 +41,7 @@
         }
         else if(message['action']=='card_accepted'){
             window.location.href = "playground.html";
+            console.log(message)
         }
         else if (Array.isArray(message)) {
             cards = message;
@@ -136,11 +143,13 @@
     }
 
     function send_card(cardIndex) {
+        let player =<?php echo $player_number;?>;
         ws.send(JSON.stringify({
             action: 'choose_card',
-            card: cardIndex
+            card: cardIndex,
+            player_number:`${player}`
         }));
-        console.log(cardIndex)
+        // console.log(player)
     }
 
     function show_card_detail(index){
