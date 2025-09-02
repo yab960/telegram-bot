@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="option_container" class="grid grid-cols-10 gap-1 p-2 " >
+    </div>
+
+<div class=" hidden absolute top-0 left-0 w-screen h-screen flex-col justify-center items-center" id="card_detail">
+    <div class="bg-yellow-400 w-[70%] h-[50%] mx-auto text-center " >
+        <div class="grid grid-cols-5 gap-1 mx-auto" id="numbers" >
+            <span>B</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+            <span>O</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    let cards = [];
+    let selectedCardIndex = -1; 
+    const ws = new WebSocket("ws://localhost:8080");
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if(message['action']=='card_taken'){
+            cards[message['card_index']].status='taken';
+            display_cards();
+        }
+        else if(message['action']=='card_accepted'){
+            window.location.href = "playground.html";
+        }
+        else if (Array.isArray(message)) {
+            cards = message;
+            display_cards();
+        }
+    }
+
+    function display_cards() {
+        let option_container = document.getElementById('option_container');
+        option_container.innerHTML = '';
+        cards.forEach((card, index) => {
+            let status =card.status
+            const card_div = document.createElement('div');
+            card_div.setAttribute('data-index',index);
+            card_div.className="cursor-pointer w-8 h-8 bg-purple-700 border rounded-md text-white font-bold aspect-ratio-1/1 text-center";
+            card_div.textContent=index+1;
+            option_container.appendChild(card_div);
+
+            if(status!=='taken'){
+                card_div.addEventListener('click',()=>{
+                const index = card_div.getAttribute('data-index');
+                document.getElementById('card_detail').classList.remove('hidden')
+                const numbers =document.getElementById('numbers')
+                numbers.innerHTML='';
+                for(let i=0; i<4; i++){
+                    let k
+                    if(i==0){
+                        console.log(card.card['B'])
+                        for(let i=0; i<card.card['B'].length; i++){
+                            const cell = document.createElement('span');
+                            cell.textContent=card.card['B'][i];
+                            numbers.appendChild(cell)
+
+                        }
+                        
+                    }
+                    else if(i==1){
+                        console.log(card.card['I'])
+                        for(let i=0; i<card.card['I'].length; i++){
+                            const cell = document.createElement('span');
+                            cell.textContent=card.card['I'][i];
+                            numbers.appendChild(cell)
+
+                        }
+                        
+                    }
+                    else if(i==2){
+                        console.log(card.card['N'])
+                        for(let i=0; i<card.card['N'].length; i++){
+                            const cell = document.createElement('span');
+                            cell.textContent=card.card['N'][i];
+                            numbers.appendChild(cell)
+
+                        }
+                        
+                    }
+                    else if(i==3){
+                        console.log(card.card['G'])
+                        for(let i=0; i<card.card['G'].length; i++){
+                            const cell = document.createElement('span');
+                            cell.textContent=card.card['G'][i];
+                            numbers.appendChild(cell)
+
+                        }
+                        
+                    }
+                    else if(i==4){
+                        console.log(card.card['O'])
+                        for(let i=0; i<card.card['O'].length; i++){
+                            const cell = document.createElement('span');
+                            cell.textContent=card.card['O'][i];
+                            numbers.appendChild(cell)
+  
+                        }  
+                    }
+                }
+                        const accept_btn= document.createElement('Button');
+                        accept_btn.textContent="accept";
+                        accept_btn.setAttribute('index',index)
+                        accept_btn.addEventListener('click',()=>{
+                            let index =accept_btn.getAttribute('index')
+                            send_card(index)
+                            document.getElementById('card_detail').classList.add('hidden')
+                            
+                        })
+                        numbers.appendChild(accept_btn)
+
+
+                })
+
+            }
+            else{
+                card_div.classList.add('bg-red-500')
+            }
+            
+        
+        });
+
+    }
+
+    function send_card(cardIndex) {
+        ws.send(JSON.stringify({
+            action: 'choose_card',
+            card: cardIndex
+        }));
+        console.log(cardIndex)
+    }
+
+    function show_card_detail(index){
+        console.log(index)
+
+    }
+</script>
