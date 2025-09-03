@@ -4,23 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 <body>
-    playe Ground
-    <button onclick="
-    bingo(10)" >Bingo</button>
+    <div class="grid grid-cols-5" id="container">
+        
+    </div>
+
+    <button id="bingo_btn" >Bingo</button>
 </body>
 </html>
 <script>
+    const draw_number=[];
     const ws = new WebSocket("ws://localhost:8080");
+    let bingo_btn =document.getElementById('bingo_btn');
+    const container = document.getElementById("container");
+    let marked_numbers = [];
+    let card;
+    let winning_patterns;
+    ws.addEventListener('open',(event)=>{
+        get_card(927102920)
+    })
+    ws.onmessage=(event)=>{
+        
+        const message = JSON.parse(event.data)
+        if(message.action=='here_is_your_card'){
+            card=message.card.card
+            display_card(card)
+            winning_patterns=generateWinningPatterns(card);
 
-    function bingo(cardIndex) {
+        }
+        else if(message.action=='draw'){
+            draw_number.push(message.number)
+        }
+
+    }
+
+
+    function display_card(card){
+        const letters = ['B','I','N','G','O'];   
+        for(let letter of letters){
+            const header= document.createElement('div')
+            header.textContent=letter
+            container.appendChild(header)
+        }
+        
+        for(let i=0; i<5; i++){
+            for(let letter of letters){
+                const number = card[letter][i];
+                const cell = document.createElement('div')
+                cell.textContent=number;
+                cell.dataset.number = number;
+                cell.addEventListener('click',()=>{
+                    mark_number(number,cell);
+                })
+                container.appendChild(cell);
+            }
+        }
+    }
+
+    function mark_number(number,cell){
+        if (marked_numbers.includes(number)){
+            marked_numbers= marked_numbers.filter(n=>n !== number);
+            cell.classList.remove('marked')
+        }else{
+            marked_numbers.push(number);
+            cell.classList.add('marked');
+        }
+    }
+
+    function generateWinningPatterns(card){
+        const patterns =[];
+
+        const letters = ['B','I','N','G','O'];
+
+        for (let letter of letters){
+            patterns.push([...card[letter]]);
+        }
+        for (let col = 0; col <5; col++){
+            let columnPattern = [];
+            for(let letter of letters){
+                columnPattern.push(card[letter][col])
+            }
+            patterns.push(columnPattern);
+        }
+
+        const diagonal1=[
+            card.B[0],
+            card.I[1],
+            card.N[2],
+            card.G[3],
+            card.O[4]
+        ];
+        patterns.push(diagonal1);
+
+        const diagonal2=[
+            card.B[4],
+            card.I[3],
+            card.N[2],
+            card.G[1],
+            card.O[0]
+        ];
+
+        patterns.push(diagonal2);
+        return patterns;
+
+    }
+   
+    function check_bingo(marked_numbers, winning_patterns, drawn_numbers) {
+        // First, verify ALL marked numbers were actually drawn (anti-cheat)
+
+
+        // Then check if any winning pattern is complete
+        for (let pattern of winning_patterns) {
+            if (pattern.every(number => marked_numbers.includes(number))) {
+                return true; // Valid BINGO!
+            }
+        }
+        
+        return false; // No winning pattern found
+    }
+
+   bingo_btn.addEventListener('click',()=>{
+    if(check_bingo(marked_numbers,winning_patterns,draw_number)){
+        bingo(marked_numbers)
+        console.log('send to server');
+    }
+    else{
+        alert("Bad Bingo !")
+    }
+   })
+
+   function get_card(number){
+    if(ws){
 
         ws.send(JSON.stringify({
-            action: 'win',
-            card:'10',
-            player_number:927102920
-        }));
-        
+            number:number,
+            action:'get_card'
+        }))
     }
-    </script>
+   }
+
+   function bingo(marked_number){
+    ws.send(JSON.stringify({
+        action:'bingo',
+        marked_number:marked_number,
+        player_number:927102920
+    }))
+
+   }
+
+
+   </script>
+
+   <style>
+    .marked{
+        background-color: aqua;
+    }
+   </style>
