@@ -144,12 +144,11 @@ $player_number = '0927102920';
     }
 
     function send_card(cardIndex) {
-        let player =<?php echo $player_number;?>;
-        player =document.getElementById("temp_num").value;
+        let player =927102920
         ws.send(JSON.stringify({
             action: 'choose_card',
             card: cardIndex,
-            player_number:`${player}`
+            player_number:player
         }));
         console.log(player)
     }
