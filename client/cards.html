@@ -29,7 +29,7 @@
 <script>
     let cards;
     let player_number=927102920
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket("https://game-3v97.onrender.com:8080");
     ws.onmessage = (event) => {
         const message = JSON.parse(event.data);
         if(message['action']=='card_taken'){
