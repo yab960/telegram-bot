@@ -1,0 +1,45 @@
+    .cartoon{
+        font-family: 'Bangers', cursive;
+    }
+    .outlined-text {
+      color: white;
+      -webkit-text-stroke: 1px rgb(46, 42, 42); 
+    }
+    .glossy-btn {
+    background: linear-gradient(to bottom, #449ff4, #006ef4);
+    border: 2px solid #298ed1;
+    border-radius: 8px;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.2),inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    overflow: hidden;
+    }
+    .glossy-btn-green {
+    background: linear-gradient(to bottom, #5efc46, #2bff00);
+    border: 2px solid #42d129;
+    border-radius: 8px;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.2),inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    overflow: hidden;
+    }
+    .glossy-btn-red {
+    background: linear-gradient(to bottom, #ff3232, #ff0202);
+    border: 2px solid #d12929;
+    border-radius: 8px;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.2),inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .glossy-btn-green::before {
+    width: 100%;
+    height: 50%;
+  }
+  .glossy-btn::before {
+    width: 100%;
+    height: 50%;
+  }
+  .glossy-btn:active {
+    background: linear-gradient(to bottom, #f39f3e, #f9d976);
+    box-shadow:
+      inset 0 3px 5px rgba(0, 0, 0, 0.3);
+  }

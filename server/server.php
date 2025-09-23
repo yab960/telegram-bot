@@ -23,44 +23,21 @@ class bingoGame implements MessageComponentInterface{
         $this->clients = new \SplObjectStorage;
         $this->loop =$loop;
         $this->conn_db = $conn_db;
-        $this ->cards = $this->generate_bingo_cards(10);
+        $this ->cards = $this->generate_bingo_cards(96);
         $this ->players=[];
         $this ->state= state::choosing;
         $this ->choosing_count_down=35;
         $this ->draw = [];
         echo "Bingo Server Started\n";
-        
-        $this->loop->addPeriodicTimer(1, function ($timer){
+        $this->choosingTimer = $this->loop->addPeriodicTimer(1,function(){
             $this->choosing_count_down--;
-            if($this->choosing_count_down <0){
-                echo"time is up for choosing\n";
-                $this->state=$this->state::playing;
-                $this->loop->cancelTimer($timer);
-            }
-
-        
-        });
-
-        $this->gameTimer = $this->loop->addPeriodicTimer(1, function ($timer){
-            $this->choosing_count_down--;
-            if($this->state==$this->state::playing && count($this->draw)<75){
-                $number =$this->geenerate_number();
-                foreach($this->clients as $client){
-                    $client->send(json_encode([
-                        'action'=>'draw',
-                        'number'=>$number
-                    ]));
-                }
-                $this->draw[]=$number;
-                echo "$number and lenght is". count($this->draw)."\n";
-            }
-            else if(count($this->draw)>70){
-                echo"fifished";
-                $this->loop->cancelTimer($this->gameTimer);
+            if($this->choosing_count_down <=0){
+                $this->state = state::playing;
+                $this->loop->cancelTimer($this->choosingTimer);
+                $this->startGameTimer();
             }
         });
     }
-
     public function onOpen(ConnectionInterface $conn){
         $this->clients->attach($conn);
         echo "New Player:\n";
@@ -86,13 +63,15 @@ class bingoGame implements MessageComponentInterface{
             ));
 
         }
-        else if($action=="win"){
-            $index = $data['card'];
-            $player_number =$data['player_number'];
-       
-            
-            $this->state == $this->state::bingo;
+        else if($action=='state_please'){
+            $from->send(json_encode(
+                [
+                    'action'=>'playing',
+                    'card'=>$this->cards
+                ]
+                ));
         }
+
         else if($action=='bingo'){
             $player_number=$data['player_number'];
             $marked_number=$data['marked_number'];
@@ -101,6 +80,17 @@ class bingoGame implements MessageComponentInterface{
             if($this->check_bingo($marked_number,$this->draw,$card['card'])){
                 $this->loop->cancelTimer($this->gameTimer);
                 echo "Game timer stopped.\nWe Have A winner\n";
+                $from->send(json_encode([
+                    'action'=>'you_won'
+                ]));
+                foreach($this->clients as $client)
+                    {
+                        $client->send(json_encode([
+                            'action'=>'bingo',
+                            'player'=>$player_number,
+                            'card'=>$card
+                        ]));
+                    }
             }
 
         }
@@ -265,13 +255,67 @@ class bingoGame implements MessageComponentInterface{
         return false;
 
     }
+    private function startChoosingTimer(){
+        $this->choosingTimer =$this->loop->addPeriodicTimer(1, function(){
+            $this->choosing_count_down--;
+            if($this->choosing_count_down<=0){
+                $this->state =state::playing;
+                $this->loop->cancelTimer($this->choosingTimer);
+                $this->startGameTimer();
+            }
+        });
+    }
+
+    private function startGameTimer(){
+        $this->gameTimer =$this->loop->addPeriodicTimer(0.5, function (){
+            if($this->state ==state::playing && count($this->draw)<75){
+                $number =$this->geenerate_number();
+                foreach($this->clients as $client){
+                    $client->send(json_encode([
+                        'action'=>'draw',
+                        'number'=>$number
+                    ]));
+                }
+                $this->draw[]=$number;
+                echo "$number and lenght is". count($this->draw)."\n";
+            }
+            else if(count($this->draw)>=75){
+                echo "all numbers are drawn  auto reset";
+                foreach($this->clients as $client){
+                    $client->send(json_encode(
+                        [
+                            'action'=>'all_draw',
+
+                        ]
+                        ));
+
+                }
+                $this->loop->cancelTimer($this->gameTimer);
+                
+                $this->loop->addTimer(10, function() { // 10 second delay
+                    $this->loop->cancelTimer($this->gameTimer);
+                    $this->reset();
+                });
+                $this->reset();
+            }
+        });
+    }
 
     private function reset(){
+        foreach($this->clients as $client){
+            $client->send(json_encode([
+                'action'=>'game_reseting'
+            ]));
+        }
+        if(isset($this->gameTimer)){
+            $this->loop->cancelTimer($this->gameTimer);
+        }
         echo "Reseting Game \n";
         $this->draw=[];
-        $this->state=GameState::choosing;
+        $this->cards=[];
+        $this->state=state::choosing;
         $this->choosing_count_down = 35;
-        $this->cards =$this->generate_bingo_cards(10);
+        $this->cards =$this->generate_bingo_cards(96);
         foreach($this->clients as $client){
             $client->send(json_encode([
                 'action'=>'new_round',
