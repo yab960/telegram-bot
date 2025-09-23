@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[url('images/grass.png')]" >
+    <div class="text-center -mt-[100px] -mb-[90px] " >
+        <img src="images/bingo.png" alt="">
+    </div>
+    <div id="option_container" class="w-[94%]  mx-auto bg-purple-700 grid grid-cols-8 gap-[5px] p-2  rounded-xl p-3">
+    </div>
+    <div id="null-screen" class="pointer-events-none absolute top-0 left-0 flex items-center justify-center aspect-square  w-screen" >
+        <div id="card_detail" class="hidden relative grid grid-cols-5 gap-1 p-3 pt-6 pb-[74px]  bg-[#f3f1e7] shadow-[0_4px_20px_rgba(0,0,0,0.8)] border-5 mt-[180px] rounded-md text-center  ">
+        </div>
+
+</div>
+<footer class=" bg-yellow-600 py-3 bottom-0 mb-2 text-center  w-screen" >
+    <p class="text-white  font-semi-bold" >wee Group. All Rigts Reserverd 2018</p>
+</footer>
+</body>
+</html>
+<script>
+    let cards;
+    let player_number=927102920
+    const ws = new WebSocket("ws://localhost:8080");
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if(message['action']=='card_taken'){
+            cards[message['card_index']].status='taken';
+            display_cards();
+        }
+        else if(message['action']=='card_accepted'){
+            window.location.href = "playground.html";
+        }
+        else if (Array.isArray(message)) {
+            console.log(message)
+            cards = message;
+            display_cards(cards);
+        }
+        else if(message['action']=='playing'){
+            cards=message['card'];
+            display_cards(cards)
+        }
+        else{
+            ws.send(JSON.stringify({
+                action:'state_please'
+                
+            }))
+        }
+
+        
+    }
+    
+    function display_cards(cards){
+        let container = document.getElementById('option_container');
+        container.innerHTML='';
+        let i=0;
+        for(let card of cards){
+            let status= card.status;
+            let current_card=card.card;
+            const cell =document.createElement('div');
+            cell.textContent=i;
+            cell.classList.add('glossy-btn','border-3','text-center','cartoon','text-white','outlined-text','rounded-md','aspect-square','flex','items-center','justify-center')
+            cell.dataset.number=i;
+            i++;
+            if(status=='available'){
+                cell.addEventListener('click',()=>{
+                    show_card(cell.dataset.number);
+                })
+            }
+            container.appendChild(cell)
+
+        }
+        
+
+    }
+    function show_card(i){
+
+        const card_detail =document.getElementById('card_detail');
+        card_detail.innerHTML=''
+        card_detail.classList.remove('hidden')
+        document.getElementById('null-screen').classList.remove('pointer-events-none')
+        const card = cards[i].card;
+        letters=[
+            'B',
+            'I',
+            'N',
+            'G',
+            'O'
+        ];
+        for(let letter of letters){
+            const cell=document.createElement('div');
+            cell.textContent=letter;
+            let color;
+            if(letter=='B'){
+                color='#FF0000'
+            }
+            else if(letter=='I'){
+                color='#2E2EFF'
+            }
+            else if(letter=='N'){
+                color='#00FF00'
+            }
+            else if(letter=='G'){
+                color='#FF2A00'
+            }
+            else{
+                color='#ff00ff'
+            }
+            cell.classList.add('text-center',`bg-[${color}]`,'cartoon','text-3xl','outlined-text')
+            card_detail.appendChild(cell)
+        }
+        for(let letter of letters){
+            for(let i=0; i<5; i++){
+            const cell=document.createElement('div');
+            cell.textContent=card[letter][i];
+            cell.classList.add('cartoon','text-3xl')
+
+            card_detail.appendChild(cell)
+            }
+        }
+        const accept_btn= document.createElement('button');
+        accept_btn.textContent='Accept'
+        accept_btn.dataset.player_number=player_number;
+        accept_btn.dataset.card=i;
+        accept_btn.classList.add('absolute','bottom-0','right-6' ,'text-2xl','glossy-btn-green','cartoon','outlined-text','px-4','py-2','mx-auto' )
+        accept_btn.addEventListener('click',()=>{
+            // console.log(`player${accept_btn.dataset.player_number} have choosen the card ${accept_btn.dataset.card}`)
+            let player=accept_btn.dataset.player_number;
+            let card = accept_btn.dataset.card
+            send_card(player,card);
+        })
+        const cancel_btn= document.createElement('button');
+        cancel_btn.textContent='Cancel'
+        cancel_btn.dataset.player_number=player_number;
+        cancel_btn.dataset.card=i;
+        cancel_btn.addEventListener('click',()=>{
+            card_detail.classList.add('hidden')
+            document.getElementById('null-screen').classList.add('pointer-events-none')
+        })
+        cancel_btn.classList.add('absolute','bottom-0','left-6','text-2xl','glossy-btn-red','cartoon','outlined-text','px-4','py-2','mx-auto' )
+        
+        card_detail.appendChild(accept_btn);
+        card_detail.appendChild(cancel_btn)
+    }
+
+    function send_card(player,cardIndex) {
+        ws.send(JSON.stringify({
+            action: 'choose_card',
+            card: cardIndex,
+            player_number:player
+        }));
+        console.log(player)
+    }
+
+    function show_card_detail(index){
+        // console.log(index)
+
+    }
+</script>
+<style>
+
+</style>

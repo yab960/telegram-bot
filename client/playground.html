@@ -5,14 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
         <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
 
 </head>
-<body>
-    <div class="grid grid-cols-5" id="container">
-        
+<body class="bg-[url('images/grass.png')]" >
+    <div class="text-center -mt-[100px] -mb-[90px] " >
+        <img src="images/bingo.png" alt="">
     </div>
 
-    <button id="bingo_btn" >Bingo</button>
+    <div class="grid rounded-md text-sm  bg-purple-200 m-2 [&>*]:rounded-full [&>*]:text-center grid-cols-[repeat(16,minmax(0,1fr))] [&>*]:aspect-square  ">
+        <div class="bg-red-600" >B</div>
+        <div> 1</div>
+        <div> 2</div>
+        <div> 3</div>
+        <div> 4</div>
+        <div> 5</div>
+        <div> 6</div>
+        <div> 7</div>
+        <div> 8</div>
+        <div> 9</div>
+        <div> 10</div>
+        <div> 11</div>
+        <div> 12</div>
+        <div> 13</div>
+        <div> 14</div>
+        <div> 15</div>
+        <div class="bg-blue-600" >I</div>
+        <div>16</div>
+        <div>17</div>
+        <div>18</div>
+        <div>19</div>
+        <div>20</div>
+        <div>21</div>
+        <div>22</div>
+        <div>23</div>
+        <div>24</div>
+        <div>25</div>
+        <div>26</div>
+        <div>27</div>
+        <div>28</div>
+        <div>29</div>
+        <div>30</div>
+        <div class="bg-green-600" >N</div>
+        <div>31</div>
+        <div>32</div>
+        <div>33</div>
+        <div>34</div>
+        <div>35</div>
+        <div>36</div>
+        <div>37</div>
+        <div>38</div>
+        <div>39</div>
+        <div>40</div>
+        <div>41</div>
+        <div>42</div>
+        <div>43</div>
+        <div>44</div>
+        <div>45</div>
+        <div class="bg-orange-600" >G</div>
+        <div>46</div>
+        <div>47</div>
+        <div>48</div>
+        <div>49</div>
+        <div>50</div>
+        <div>51</div>
+        <div>52</div>
+        <div>53</div>
+        <div>54</div>
+        <div>55</div>
+        <div>56</div>
+        <div>57</div>
+        <div>58</div>
+        <div>59</div>
+        <div>60</div>
+        <div class="bg-purple-600" >O</div>
+        <div>61</div>
+        <div>62</div>
+        <div>63</div>
+        <div>64</div>
+        <div>65</div>
+        <div>66</div>
+        <div>67</div>
+        <div>68</div>
+        <div>69</div>
+        <div>70</div>
+        <div>71</div>
+        <div>72</div>
+        <div>73</div>
+        <div>74</div>
+        <div>75</div>
+    </div>
+
+
+<div id="draw_container" class="flex p-3 space-x-2 flex-nowrap overflow-x-auto">        
+     
+    </div>
+
+
+    <div class="w-screen text-center bg-purple-200 grid grid-cols-5" id="container">
+        
+    </div>
+    <div class="  p-5 w-screen flex text-center justify-center items-center ">
+
+        <button id="bingo_btn" class="  bg-yellow-600 px-2 py-1 rounded-md border-2 text-white cartoon text-2xl outlined-text letter-spacing-2 " >Bingo</button>
+    </div>
+    <footer class="absolute bg-yellow-600 py-3 bottom-0 mb-2 text-center  w-screen" >
+    <p class="text-white  font-semi-bold" >wee Group. All Rigts Reserverd 2018</p>
+</footer>
 </body>
 </html>
 <script>
@@ -36,8 +136,21 @@
 
         }
         else if(message.action=='draw'){
+            show_draw(message.number)
             draw_number.push(message.number)
         }
+        else if(message.action=='game_reseting'){
+            window.location.href = "cards.html";
+
+        }
+        else if(message.action=='bingo'){
+            alert('some One Has Won!!!!')
+        }
+        else if(message.action=='all_draw'){
+            alert('all Numbers are drawn No One Clamied Bingo');
+        }
+        else if(message.action=='you_won'){
+            alert('Congragulation You Have Won This Round')        }
 
     }
 
@@ -47,18 +160,39 @@
         for(let letter of letters){
             const header= document.createElement('div')
             header.textContent=letter
+            let color;
+            if(letter=='B'){
+                color='#FF0000'
+            }
+            else if(letter=='I'){
+                color='#2E2EFF'
+            }
+            else if(letter=='N'){
+                color='#00FF00'
+            }
+            else if(letter=='G'){
+                color='#FF2A00'
+            }
+            else{
+                color='#ff00ff'
+            }
+            header.classList.add('text-center',`bg-[${color}]`,'cartoon','text-3xl','outlined-text')
+           
             container.appendChild(header)
         }
         
+        for(let letter of letters){
         for(let i=0; i<5; i++){
-            for(let letter of letters){
                 const number = card[letter][i];
                 const cell = document.createElement('div')
                 cell.textContent=number;
                 cell.dataset.number = number;
+                cell.classList.add('cartoon','text-3xl')
+
                 cell.addEventListener('click',()=>{
                     mark_number(number,cell);
                 })
+                
                 container.appendChild(cell);
             }
         }
@@ -155,7 +289,19 @@
 
    }
 
+   function show_draw(number){
+    const draw_number= document.createElement('div')
+    draw_number.textContent=number
+    draw_number.classList.add('bg-red-600', 'shrink-0' ,'rounded-full','w-8', 'text-2xl', 'aspect-square' ,'text-center' ,'flex' ,'text-white' ,'font-semi-bold' ,'justify-center' ,'items-center');
+    const draw_container =document.getElementById('draw_container')
+    draw_container.appendChild(draw_number)
+    const lastChild = draw_container.lastElementChild;
+    lastChild.scrollIntoView({
+    behavior: 'smooth',
+    inline: 'end'
+    });
 
+   }
    </script>
 
    <style>
