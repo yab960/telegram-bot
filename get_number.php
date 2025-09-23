@@ -97,7 +97,8 @@ function launch_btn($chat_id){
         [
 
             ['text'=>'Start The Game',
-            'web_app'=>['url'=>'https://telegram-bot-aet7.onrender.com/index.php']
+            'web_app'=>['url'=>'https://telegram-bot-aet7.onrender.com/index.html
+            ']
             ]
         ]
     ]];
